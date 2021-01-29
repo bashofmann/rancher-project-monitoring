@@ -1,0 +1,10 @@
+apiVersion: v2
+name: rancher-project-monitoring
+description: Project/namespace monitoring based on rancher-monitoring
+type: application
+version: 9.4.201
+appVersion: "9.4.2"
+dependencies:
+- name: kube-prometheus-stack
+  version: "9.4.2"
+  repository: https://prometheus-community.github.io/helm-charts

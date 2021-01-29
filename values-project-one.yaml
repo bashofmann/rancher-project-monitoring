@@ -1,0 +1,43 @@
+kube-prometheus-stack:
+  namespaceOverride: "project-one-monitoring"
+
+  kubelet:
+    enabled: true
+    serviceMonitor:
+      cAdvisorMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-one-.*
+          action: keep
+      probesMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-one-.*
+          action: keep
+      resourceMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-one-.*
+          action: keep
+      metricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-one-.*
+          action: keep
+  kube-state-metrics:
+    namespace: project-one-workloads
+
+  grafana:
+    sidecar:
+      dashboards:
+        searchNamespace: "project-one-monitoring"
+      datasources:
+        searchNamespace: "project-one-monitoring"
+
+  prometheus:
+    prometheusSpec:
+      podMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-9k72h
+      ruleNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-9k72h
+      serviceMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-9k72h

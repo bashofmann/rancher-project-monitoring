@@ -1,0 +1,103 @@
+kube-prometheus-stack:
+  nameOverride: "rancher-project-monitoring"
+  namespaceOverride: "prometheus-one"
+
+  prometheus-adapter:
+    enabled: false
+  kubeApiServer:
+    enabled: false
+  kubelet:
+    enabled: true
+    serviceMonitor:
+      cAdvisorMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: tenant-one
+          action: keep
+      probesMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: tenant-one
+          action: keep
+      resourceMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: tenant-one
+          action: keep
+      metricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: tenant-one
+          action: keep
+  kubeControllerManager:
+    enabled: false
+  coreDns:
+    enabled: false
+  kubeDns:
+    enabled: false
+  kubeEtcd:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubeProxy:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  prometheusOperator:
+    enabled: false
+    manageCrds: false
+    createCustomResource: false
+    admissionWebhooks:
+      enabled: false
+  kube-state-metrics:
+    namespace: tenant-one
+
+  defaultRules:
+    create: true
+    rules:
+      alertmanager: true
+      etcd: false
+      general: false
+      k8s: true
+      kubeApiserver: false
+      kubeApiserverAvailability: false
+      kubeApiserverError: false
+      kubeApiserverSlos: false
+      kubelet: false
+      kubePrometheusGeneral: false
+      kubePrometheusNodeAlerting: false
+      kubePrometheusNodeRecording: false
+      kubernetesAbsent: false
+      kubernetesApps: true
+      kubernetesResources: true
+      kubernetesStorage: true
+      kubernetesSystem: false
+      kubeScheduler: false
+      kubeStateMetrics: true
+      network: false
+      node: false
+      prometheus: true
+      prometheusOperator: false
+      time: false
+
+  grafana:
+    sidecar:
+      dashboards:
+        searchNamespace: "prometheus-one"
+      datasources:
+        searchNamespace: "prometheus-one"
+
+  prometheus:
+    prometheusSpec:
+      ignoreNamespaceSelectors: true
+      podMonitorSelector: {}
+      podMonitorSelectorNilUsesHelmValues: false
+      podMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-cb9l4
+      ruleSelector: {}
+      ruleSelectorNilUsesHelmValues: false
+      ruleNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-cb9l4
+      serviceMonitorSelector: {}
+      serviceMonitorSelectorNilUsesHelmValues: false
+      serviceMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-cb9l4

@@ -1,0 +1,43 @@
+kube-prometheus-stack:
+  namespaceOverride: "project-two-monitoring"
+
+  kubelet:
+    enabled: true
+    serviceMonitor:
+      cAdvisorMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-two-.*
+          action: keep
+      probesMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-two-.*
+          action: keep
+      resourceMetricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-two-.*
+          action: keep
+      metricRelabelings:
+        - sourceLabels: [ namespace ]
+          regex: project-two-.*
+          action: keep
+  kube-state-metrics:
+    namespace: project-two-workloads
+
+  grafana:
+    sidecar:
+      dashboards:
+        searchNamespace: "project-two-monitoring"
+      datasources:
+        searchNamespace: "project-two-monitoring"
+
+  prometheus:
+    prometheusSpec:
+      podMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-vjs7b
+      ruleNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-vjs7b
+      serviceMonitorNamespaceSelector:
+        matchLabels:
+          field.cattle.io/projectId: p-vjs7b
