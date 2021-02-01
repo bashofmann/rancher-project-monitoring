@@ -46,7 +46,8 @@ kube-prometheus-stack:
     admissionWebhooks:
       enabled: false
   kube-state-metrics:
-    namespace: tenant-one
+    extraArgs:
+      - '--namespaces=tenant-one'
 
   defaultRules:
     create: true

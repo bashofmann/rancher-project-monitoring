@@ -21,7 +21,8 @@ kube-prometheus-stack:
           regex: project-two-.*
           action: keep
   kube-state-metrics:
-    namespace: project-two-workloads
+    extraArgs:
+      - '--namespaces=project-two-workloads,project-two-monitoring'
 
   grafana:
     sidecar:
